@@ -18,6 +18,7 @@ int main()
     PM5CTL0 =   ENABLE_PINS;                    // Allow to use inputs and outputs
 
     P1DIR   =   RED_LED;                        // Set the red LED as an output
+    P1OUT = RED_LED;                            // Turn on the LED at the beginning
 
     TA0CTL  =   ACLK | UP;                      // It setups the Timer_A0 peripheral to count UP
                                                 // and how fast to count
@@ -32,18 +33,24 @@ int main()
 
         if(TA0CTL & TAIFG)                      // TRUE if the counter counts to 40 000
         {
-            P1OUT = RED_LED;                    // Turn on the LED at the beginning
             intervals++;                        // Increment number of counts of 40 000
             TA0CTL = TA0CTL & (~TAIFG);         // Reset the Timer_A0 peripheral counter and count again
                                                 // from 0 to 40 000
 
-            if(intervals == 3)                  // If counted 3 * 40 000 = 120 000
+            if(P1OUT & RED_LED)                 // If red LED is on
             {
-                P1OUT ^= RED_LED;               // Turn off the red LED for 1 second
-                intervals = 0;                  // Reset the interval value, and count again from 0 t0 3
+                if(intervals == 3)              // If counted 3 * 40 000 = 120 000
+                {
+                    P1OUT = 0x00;               // Turn off the red LED for 1 second
+                    intervals = 0;              // Reset the interval value, and count again from 0 t0 3
+                }
+            }
+            else
+            {
+                P1OUT = RED_LED;                // Turn on the red LED
+                intervals = 0;                  // Reset the interval value, and count again
             }
         }
-    }
+    } // end while(1)
 
-
-}
+} // end main()
