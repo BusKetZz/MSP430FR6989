@@ -7,5 +7,7 @@ Description: Create C programs for a microcontroller using inputs/outputs, timer
 			 comm ports, and LCD.
 
 Lectures: 114
+
 Video: 32 hours
+
 Instructor: Mark M.Budnik - Valparaiso University
